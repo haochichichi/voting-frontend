@@ -1,4 +1,5 @@
 import jszip from 'jszip'
+import ExportJsonExcel from 'js-export-excel'
 
 /**
  * @description 获取文件前缀名称
@@ -38,4 +39,39 @@ export const zipToFileList =(zipFile)=>{
         })
     })
     return fileList
+}
+
+
+export const ArrayToExcelObj = (fileName:string,datas)=>{
+    const excelResult={}
+    excelResult.fileName=fileName
+    excelResult.datas=datas
+    // option.datas=[
+    //     {
+    //         sheetData:[//后端返回的数据表格json数据
+    //             {name:'lili',age:'18'},
+    //             {name:'mary',age:'20'}
+    //         ],
+    //         sheetHeader:['姓名','年龄'],//前端指定的表头
+    //         sheetName: 'sheet',
+    //         sheetFilter: ['name', 'age']
+    //     },
+    //     {
+    //         sheetData:[//表格2的内容
+    //             {grade:'90',name:'lili',},
+    //             {name:'mary',grade:'99'}
+    //         ],
+    //         sheetHeader:['姓名','成绩']
+    //     }
+    // ];
+    return new ExportJsonExcel(excelResult);
+    // ArrayToExcel(fileName,datas).saveExcel();
+}
+
+export const excelToObject = ()=>{
+
+}
+
+export const excelToArray = ()=>{
+
 }
