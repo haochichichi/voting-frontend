@@ -13,7 +13,7 @@ export function getFileContentName(fileFullName:string):string{
  * @description 文件压缩为zip格式
  * @param {string} zipName 文件全称
  */
-export const fileListToZip=async (zipName,fileList)=>{
+export const fileListToZip=async (zipName:string,fileList):Promise<Blob>=>{
     const zip =new jszip()
     zip.file(zipName,fileList)
     const zipFile = await zip.generateAsync({
@@ -28,7 +28,7 @@ export const fileListToZip=async (zipName,fileList)=>{
 
 /**
  * @description 解压zip格式文件
- * @param {string} zipFile 被解压的zip file
+ * @param {any} zipFile 被解压的zip file
  */
 export const zipToFileList =(zipFile)=>{
     const zip =new jszip()

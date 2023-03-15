@@ -4,7 +4,7 @@ import FullScreen from '/@/components/fullScreen/FullScreen.vue'
 </script>
 
 <template>
-  <div>
+  <!-- <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
@@ -13,10 +13,11 @@ import FullScreen from '/@/components/fullScreen/FullScreen.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
-  <FullScreen />
+  <FullScreen /> -->
+  <router-view />
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -29,4 +30,4 @@ import FullScreen from '/@/components/fullScreen/FullScreen.vue'
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
-</style>
+</style> -->

@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import {useFullscreen} from '/@packages/headless'
+import {useRouter, useRoute } from 'vue-router'
+
+// 路由参数获取
+const router = useRouter()
+const route = useRoute()
+
+
 defineProps<{ msg: string }>()
  console.log('???',useFullscreen)
 const count = ref(0)
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <h1>{{ msg }}{{route.params.id}}</h1>
 <!-- {{test}} -->
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
@@ -29,6 +36,15 @@ const count = ref(0)
     in your IDE for a better DX
   </p>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+  111
+  <!-- 点击跳转路由 -->
+  <url>
+    <li><router-link :to="{name:'home'}">home</router-link></li>
+    <li><router-link :to="{name:'foo'}">foo</router-link></li>
+    <li><router-link :to="{name:'bar',params:{id:23}}">bar</router-link></li>
+  </url>
+  <router-view></router-view>
+  222
 </template>
 
 <style scoped>
