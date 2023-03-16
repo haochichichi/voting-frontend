@@ -1,0 +1,32 @@
+
+@mixin flex{
+    display: flex;
+}
+@mixin flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@mixin flex-justify-center{
+    display: flex;
+    justify-content: center;
+}
+
+@mixin flex-aligin-center{
+    display: flex;
+    align-items: center;
+}
+
+@mixin full-parent-size{
+    height: 100%;
+    width: 100%;
+}
+
+@mixin box-shadow{
+    box-shadow: 
+        5px 0 2px 5px rgba(0, 0, 0 , .01),
+        -5px 0 2px 5px rgba(0, 0, 0 , .01),
+        0 5px 2px 5px rgba(0, 0, 0 , .01),
+        0 -5px 2px 5px rgba(0, 0, 0 , .01),
+        ;
+}

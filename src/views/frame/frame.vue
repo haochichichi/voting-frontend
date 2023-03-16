@@ -11,7 +11,6 @@
         <template v-slot:headerContent>我是表中</template>
         <template v-slot:headerRight>我是右表头</template>
         <template v-slot:content>
-            我是内容
             <router-view/>
         </template>
     </Frame>

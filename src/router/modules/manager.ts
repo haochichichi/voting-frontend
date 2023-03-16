@@ -1,8 +1,8 @@
 export default[
     {
-        name:'create',
-        path:'createMenu',
-        component:()=>import('/@/views/menu/createMenu.vue'),
+        name:'createVotingMenu',
+        path:'create/voting/menu',
+        component:()=>import('/@/views/createVotingMenu/createVotingMenu.vue'),
         // redirect:'/login'
    },
    {

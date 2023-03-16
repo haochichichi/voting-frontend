@@ -1,0 +1,9 @@
+@use '/@/styles/common.scss';
+.container{
+    @include common.flex-aligin-center;
+    flex-direction: column;
+}
+
+.button{
+    margin-top:10px ;
+}

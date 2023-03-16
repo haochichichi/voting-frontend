@@ -4,11 +4,12 @@
 
 <template>
     <a-layout :style="{
-        height:'100vh',
-        width:'100vw',
-        minHeight:'1080px',
-        minWidth:'1920px',
+        // height:'100vh',
+        // width:'100vw',
+        minHeight:'max(1080px,100vh)',
+        minWidth:'max(1920px,100vw)',
     }">
+      
         <a-layout-header :style="{backgroundColor: '#206CCF',height:'72px'}">
             <div v-bind="{className:style.header}">
                 <div v-bind="{className:style.menus}">
@@ -28,7 +29,8 @@
                 <slot name="content"></slot>
             </div>           
         </a-layout-content>
-        <a-layout-footer> <slot name="footer"></slot> </a-layout-footer>
+        <slot name="footer"></slot>
+      
     </a-layout>
     
     <!-- <div v-bind="{
