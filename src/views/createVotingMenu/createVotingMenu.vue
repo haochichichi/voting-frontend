@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import style from './style/createVotingMenu.module.scss'
+    import style from './styles/createVotingMenu.module.scss'
     import MenuCard from './components/menuCard.vue'
     import { onMounted } from 'vue';
     onMounted(() => {
@@ -8,15 +8,9 @@
 </script>
 <template>
     <div :className="style.container">
-        <!-- <div :className="style.pageContainer"> -->
-            <MenuCard/>
-            <MenuCard/>
-            <MenuCard/>
+            <MenuCard :className="style.menuCard"/>
+            <MenuCard :className="style.menuCard"/>
+            <MenuCard :className="style.menuCard"/>
             
-
-        <!-- <p></p>
-        <p></p>
-        <p></p> -->
-        <!-- </div> -->
     </div>
 </template>

@@ -1,0 +1,42 @@
+// @mixin page-container-list{
+//     margin: 10px 32px
+// }
+
+// @mixin page-container-default{
+//     margin: 32px;
+// }
+
+
+@use '/@/styles/common.scss';
+
+$pageContainters:(
+    default:(
+        margin:32px,
+        min-height: max(calc(1080px - 72px - 64px),calc(100vh - 72px - 64px)),
+    ),
+    list:(
+        margin:10px 32px,
+        min-height: max(calc(1080px - 72px - 40px),calc(100vh - 72px - 40px)),
+    )
+);
+
+
+@mixin getContainerConfig($pageContainters:$pageContainters){
+    @each $key,$values in $pageContainters{
+        @debug "divider offset: #{$key} ";
+        .#{$key}-container{
+            @include common.flex-center;
+            @include common.full-parent-size;
+            @each $attribute,$value in $values{
+                @debug "divider offset: #{$attribute}:#{$value}";
+                #{$attribute}:#{$value};
+            }
+        }
+    }
+}
+
+.container {
+    @include common.flex-center;
+    @include common.full-parent-size;
+    @include getContainerConfig($pageContainters)
+}

@@ -1,13 +1,23 @@
-<script>
+<script setup lang="ts">
 import style from './style/defaultCard.module.scss'
-const props =defineProps(['modelValue'])
+import { defineProps,useSlots } from 'vue';
+const props =defineProps(['className'])
+const slots =useSlots()
 </script>
 <template>
     <div
         v-bind="{
-            className: props.modelValue?.className?  props.modelValue.className:style.container
+            className: `${style.container} ${props.className?  props.className:''}`
         }" 
         >
-        <slot />
+        <div v-if="slots.headerLeft||slots.headerRight" :className="style.header">
+            <slot name="headerLeft" ></slot>
+            <slot name="headerRight" ></slot>
+        </div>
+        <slot v-else name="header" ></slot>
+        <div :className="style.content">
+            <slot />
+        </div>
+        
     </div>
 </template>

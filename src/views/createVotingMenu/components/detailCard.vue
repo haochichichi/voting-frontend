@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import style from '../style/detailCard.module.scss'
+import style from '../styles/detailCard.module.scss'
 import {ref} from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -36,7 +36,7 @@ const tagList=ref({
 
  const onTagClick=(e,item)=>{
     console.log(e,item)
-    router.push({path:`/create/voting/${item.code}`})
+    router.push({path:`/create/voting/detail`,query:{...item}})
  }
 
 </script>

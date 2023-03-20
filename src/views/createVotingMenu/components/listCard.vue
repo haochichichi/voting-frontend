@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import style from '../style/listCard.module.scss'
+import style from '../styles/listCard.module.scss'
 import DefaultModal from '/@/components/modal/defaultModal.vue'
 import DetailCard from './detailCard.vue'
 import {ref} from 'vue'

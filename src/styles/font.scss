@@ -1,0 +1,50 @@
+// 主题色常量
+$background-color-theme1:#206CCF;
+$background-color-theme2:#FFFFFF;
+$background-color-theme3:red;
+$background-color-theme4:green;
+
+// 字体大小
+$font_size_12:12px;
+$font_size_14:14px;
+$font_size_16:16px;
+$font_size_18:18px;
+$font_size_20:20px;
+
+//字体调整的差量
+$size:0;
+$size_4:1px;
+$size_6:2px;
+$size_8:3px;    
+
+// 字体调整差量
+@mixin font_color($color){
+
+}
+
+
+@mixin add_size($val,$size){
+
+}
+
+
+@mixin bg_color($color){
+    background-color: $color;
+    border-color: $color;
+    [data-theme="theme1"] & {
+        background-color: $background-color-theme1 !important;
+        border-color: $background-color-theme1;
+    }
+    [data-theme="theme2"] & {
+        background-color: $background-color-theme2 !important;
+        border-color: $background-color-theme2;
+    }
+    [data-theme="theme3"] & {
+        background-color: $background-color-theme3 !important;
+        border-color: $background-color-theme3;
+    }
+    [data-theme="theme4"] & {
+        background-color: $background-color-theme4 !important;
+        border-color: $background-color-theme4;
+    }
+}

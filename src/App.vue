@@ -14,7 +14,9 @@ import FullScreen from '/@/components/fullScreen/FullScreen.vue'
   </div>
   <HelloWorld msg="Vite + Vue" />
   <FullScreen /> -->
+  <div class="global">
   <router-view />
+  </div>
 </template>
 
 <!-- <style scoped>
@@ -31,3 +33,9 @@ import FullScreen from '/@/components/fullScreen/FullScreen.vue'
   filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style> -->
+
+<style lang="scss" scoped>
+  .global{
+    font-size: 16px;
+  }
+</style>

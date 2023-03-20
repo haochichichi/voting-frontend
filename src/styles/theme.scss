@@ -1,0 +1,23 @@
+$screen_width_1920_1080:1920px;
+$screen_height_1920_1080:1080px;
+$headbar_height_72:72px;
+
+// 字体大小
+$font_size_12:12px;
+$font_size_14:14px;
+$font_size_16:16px;
+$font_size_18:18px;
+$font_size_20:20px;
+
+//字体调整的差量
+$size:0;
+$size_4:1px;
+$size_6:2px;
+$size_8:3px; 
+
+$thems:(
+    default:(
+        screen-width:$screen_width_1920_1080,
+        screen-height:$screen_height_1920_1080,
+    ),
+);

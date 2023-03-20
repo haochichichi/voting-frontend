@@ -1,0 +1,26 @@
+@use '/@/styles/common.scss';
+
+.container{
+    @include common.flex-center;
+    height: 100%;
+    min-height: max(calc(1080px - 72px - 40px),calc(100vh - 72px - 40px));
+    width: 100%;
+    flex-direction: column;
+
+    .menuCard{
+        margin: 10px 32px;
+    }
+
+    // p{
+    //     margin: 50px;
+    //     height: 500px;
+    //     width: 500px;
+    //     background-color: aqua;
+    // }
+}
+
+// .pageContainer{
+//     height: 100%;
+//     width: 100%;
+//     background-color: white;
+// }

@@ -16,3 +16,13 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+
+
+git remote set-url origin https://<your_token>@github.com/<USERNAME>/<REPO>.git
+
+git remote set-url origin https://
+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@github.com/haochichichi/voting-frontend.git
+
+git remote rm origin
+git remote add origin https://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@github.com/haochichichi/voting-frontend.git
+

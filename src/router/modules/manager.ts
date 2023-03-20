@@ -6,9 +6,9 @@ export default[
         // redirect:'/login'
    },
    {
-        name:'voting',
-        path:'votingList',
-        component:()=>import('/@/views/menu/votingList.vue'),
+        path:'create/voting/detail',
+        name:'createVotingDetail',
+        component:()=>import('/@/views/createVotingDetail/createVotingDetail.vue'),
         // redirect:'/login'
     },
 ]

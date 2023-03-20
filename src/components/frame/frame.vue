@@ -1,16 +1,18 @@
+<!-- 页面框架 -->
 <script setup lang="ts">
     import style from './style/frame.module.scss'
+    const props =defineProps(['disableHeadBar'])
 </script>
-
 <template>
     <a-layout :style="{
-        // height:'100vh',
-        // width:'100vw',
         minHeight:'max(1080px,100vh)',
         minWidth:'max(1920px,100vw)',
     }">
       
-        <a-layout-header :style="{backgroundColor: '#206CCF',height:'72px'}">
+        <a-layout-header 
+            v-if="!props.disableHeadBar"
+            :style="{backgroundColor: '#206CCF',height:'72px'}"
+        >
             <div v-bind="{className:style.header}">
                 <div v-bind="{className:style.menus}">
                     <div>logo 图标</div>
