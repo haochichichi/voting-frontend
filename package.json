@@ -19,12 +19,14 @@
     "js-export-excel": "^1.1.4",
     "jszip": "^3.10.1",
     "lodash-es": "^4.17.21",
+    "moment": "^2.29.4",
     "pinia": "^2.0.33",
     "qs": "^6.11.1",
     "sass-loader": "^13.2.0",
     "vditor": "^3.9.1",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "webpack": "^5.76.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

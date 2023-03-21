@@ -15,8 +15,11 @@
             display: flex;
             justify-content: space-between;
         }
-        :last-child{
-            margi-bottom: 60px;
+
+        :global{
+            .ant-form{
+                margin-bottom: 100px;
+            }
         }
     }
 }
@@ -24,6 +27,11 @@
 
 .defaultInput{
     width: 220px;
+    :global{
+        .ant-picker, .ant-select{
+            width: 220px;
+        }
+    }
 }
 
 .titleInput{
@@ -34,9 +42,40 @@
     width: 740px;
 }
 
-
 .defaultInput, .titleInput, .documentInput{
     margin: 0 10px;
+}
+
+.defaultUpload{
+    flex: 1;
+
+    .uploadContent{
+        @include common.flex-center;
+        .uploadIcon{
+            @include common.flex-center;
+            svg,path{
+                height: 40px;
+                width: 40px;
+            }
+        }
+        &:hover{
+            svg,path{
+                color: #206CCF;
+            }
+        }
+    }
+    
+    .uploadText{
+        margin: 0 0 0 40px ;
+        @include common.flex;
+        flex-direction: column;
+        font-size: 18px;
+        text-align: left;
+        .commentText{
+            font-size: 16px;
+            color: #999;
+        }
+    }
 }
 
 :global{
@@ -44,7 +83,7 @@
         display: flex;
         flex-direction: column;
     }
-    .ant-input{
+    .ant-input, .ant-picker{
       height: 36px;
     }
     .ant-btn{

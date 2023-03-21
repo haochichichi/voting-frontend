@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import FullScreen from '/@/components/fullScreen/FullScreen.vue'
+
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+const local=zhCN
+
 </script>
 
 <template>
@@ -14,9 +18,12 @@ import FullScreen from '/@/components/fullScreen/FullScreen.vue'
   </div>
   <HelloWorld msg="Vite + Vue" />
   <FullScreen /> -->
-  <div class="global">
-  <router-view />
-  </div>
+  <a-config-provider :local="local">
+    <!-- ant design 配置为中文环境 -->
+    <div class="global">
+      <router-view />
+    </div>
+  </a-config-provider>
 </template>
 
 <!-- <style scoped>

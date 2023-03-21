@@ -8,10 +8,10 @@
     div{
         margin: 0 30px;
     }
-    :last-child{
+    &:last-child{
         margin-right: 0;
     }
-    :first-child{
+    &:first-child{
         margin-left:0 ;
     }
 }
