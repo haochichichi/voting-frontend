@@ -52,14 +52,18 @@
             <p :className="style.title">展示表格</p>
             <div :className="style.excelContent">
                 <!-- excel 表格 -->
-                <!-- <a-table :dataSource="tableData.dataSource" :columns="tableData.columns" /> -->
-                <s-table
-                    :className="style.excelContent"
+                <a-table 
+                    :dataSource="tableData.dataSource" 
+                    :columns="tableData.columns" 
+                    :scroll="{ y: 550,x:1400 }"
+                    :pagination="false"
+                />
+                <!-- <s-table
                     :columns="tableData.columns"
-                    :scroll="{ y: 400 }"
+                    
                     :pagination="false"
                     :data-source="tableData.dataSource"
-                ></s-table>
+                ></s-table> -->
             </div>
             <div :className="style.buttonList">
                 <a-button 
