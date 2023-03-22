@@ -1,37 +1,61 @@
 import {defineStore} from 'pinia'
 
-// 选票创建表格
+// 投票实例创建
 export const useCreateVotingDetailStore=defineStore("createVotingDetail",{
     state:()=>{
         return{
-            categoryValue:'????',
-            createdBy:'???',
+            // categoryValue:'????', 
+            // createdBy:'???',
+            // reviewTypePath:'',
+            // reviewTypeCode:'',
+            form:{
+                // reviewYear:10,
+                // title:'投票名称',
+                // targetCount:22,
+                // expertCount:30,
+                // meetingRoomCode:'111',
+                // votingTemplateFiles:[],
+                // votingTemplateObject:{},
+                // applicationMaterialsFiles:[],
+                // applicationMaterialpdfFileList:[],
+            },
+            others:{
 
-            reviewTypePath:'',
-            reviewTypeCpde:'',
+            }
 
-            reviewYear:10,
-            title:'投票名称',
-            targetCount:22,
-            expertCount:30,
-            meetingRoomCode:'111',
-            votingTemplateFiles:[],
-            votingTemplateObject:{},
-            applicationMaterialsFiles:[],
-            applicationMaterialpdfFileList:[],
+            // reviewYear:10,
+            // title:'投票名称',
+            // targetCount:22,
+            // expertCount:30,
+            // meetingRoomCode:'111',
+            // votingTemplateFiles:[],
+            // votingTemplateObject:{},
+            // applicationMaterialsFiles:[],
+            // applicationMaterialpdfFileList:[],
         }
     },
     getters:{
-        getPdfFileList(state):any[]{
-            const result=[]
-            if state.applicationMaterialsFiles.length==0{
-                return result
+        getFormState(state):any{
+            return {
+                ...state.others,
+                ...state.form,
             }
-            return result
         }
+        // getPdfFileList(state):any[]{
+        //     const result=[1,1,1]
+        //     if (state.applicationMaterialsFiles.length==0){
+        //         return result
+        //     }
+        //     // 解压applicationMaterialsFiles[0]
+
+        //     return result
+        // }
         
     },
     actions:{
-
+        saveFormState(form,others){
+            this.form=form
+            this.others=others
+        }
     }
 })

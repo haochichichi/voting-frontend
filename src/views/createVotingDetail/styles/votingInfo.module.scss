@@ -22,6 +22,35 @@
             }
         }
     }
+
+    .templateContent{
+        justify-content:flex-start;
+        
+        .title{
+            margin:30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .excelContent{
+            @include common.flex-center;
+            min-width: 1400px;
+            min-height: 650px;
+            background-color: aqua;
+            :global{
+                .surely-table{
+                    min-width: 1400px;
+                    min-height: 650px;
+                    // background-color: red;
+                }
+            }
+            
+        }
+
+        .buttonList{
+            margin:30px;
+        }
+    }
 }
 
 
@@ -31,11 +60,18 @@
         .ant-picker, .ant-select{
             width: 220px;
         }
+        
     }
 }
 
 .titleInput{
     width: 540px;
+    :global{
+        .ant-input-disabled{
+            color:black;
+            cursor:auto;
+        }
+    }
 }
 
 .documentInput{

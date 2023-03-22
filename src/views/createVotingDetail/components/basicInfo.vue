@@ -2,33 +2,50 @@
     import style from '../styles/votingInfo.module.scss'
     import { Moment } from 'moment';
     import {Card} from '@vue3-common-packages/components'
-    import {reactive, ref, computed,defineAsyncComponent} from 'vue'
+    import {reactive, ref, computed,defineAsyncComponent, onMounted} from 'vue'
     import {Button,Form,Input} from 'ant-design-vue'
     import {INPUT_LABLE_DIC} from '../utils/constant'
     import dayjs, { Dayjs } from 'dayjs';
     import { useRouter } from 'vue-router'
     import { FileZipOutlined,FileAddOutlined } from '@ant-design/icons-vue';
-
+    
+    import { storeToRefs } from 'pinia';
 
     const YEAR_DEFAULT_FORMATE='YYYY'
     const router = useRouter()
+    const {stepNum,createVotingDetailStore} =defineProps(['stepNum','createVotingDetailStore'])
+    const emits = defineEmits(['setStepNum'])
+    const {form, getFormState,saveFormState} = storeToRefs(createVotingDetailStore) //实现响应式
+    
 
+    onMounted(() => {
+        // 初始化数据
+        console.log('[store数据]',createVotingDetailStore.title)
+        createVotingDetailStore.form.reviewYear=dayjs(`${new Date()}`,YEAR_DEFAULT_FORMATE)
+    })
+
+
+
+    // 动态计算是否全部填写完成
     const submitDisabled = computed(()=>{
-        // return !(formState.title&&formState.reviewYear)
-        return false
+        // return !(form.title&&form.reviewYear)
+        let result=false
+
+        return result
     })
 
     // 动态计算标题
     const titleContent=computed(()=>{
-        return `${formState.targetCount}`
+        let result='未命名'
+        return result
+        // return `${form.targetCount}`
     })
 
-    const formState: UnwrapRef<FormState> = reactive({
-      layout: 'vertical',
-      fieldA: '',
-      fieldB: '',
-      reviewYear: ref<Dayjs>(dayjs(`${new Date()}`,YEAR_DEFAULT_FORMATE)),
-    });
+    // const form: UnwrapRef<form> = reactive({
+    //     reviewYear: ref<Dayjs>(dayjs(`${new Date()}`,YEAR_DEFAULT_FORMATE)),
+    // });
+
+    // const form=createVotingDetailStore.form
 
     const mode1 = ref<string>('year');
 
@@ -66,16 +83,17 @@
             }
             
         },{
-            component:'input',
+            component:'lable',
             formLable:'title',
             className:style.titleInput,
             formItemConfig:{
                 rules:[{ required: true, message: '输入不得为空!' }]
             },
+            value:titleContent,
             config:{
                 bordered:false,
-                // disabled:true,
-                value:titleContent,
+                disabled:true,
+                value:titleContent.value,
             }
         }],
         [{
@@ -154,13 +172,18 @@
     }
 
     const submitCreation =(values: any)=>{
-        console.log(formState);
+        console.log(form);
+        createVotingDetailStore.form.title=titleContent.value
+        console.log('[store数据]',createVotingDetailStore.form,createVotingDetailStore.getVotingDetailInfo)
+        emits('setStepNum',stepNum+1)
     }
 
 
     const cancelCreation=()=>{
         router.push({path:`/create/voting/menu`})
     }
+
+
 </script>
 
 <template>
@@ -169,7 +192,7 @@
         <div   :className="style.content">
             <a-form 
                 layout="vertical" 
-                :model="formState"
+                :model="form"
                 @finish="onFinish"
             >
                 <div v-for="eachRow in formConfig" :className="style.eachRow">
@@ -179,21 +202,24 @@
                             :className="item.className"
                             v-bind="item.formItemConfig? item.formItemConfig:{}"
                         >
+                            <div 
+                                v-if="item.component=='lable'"
+                            >{{item.value.value}}</div>
                             <a-input 
                                 v-if="item.component=='input'"
-                                v-model:value="formState[item.formLable]" 
+                                v-model:value="form[item.formLable]" 
                                 :placeholder="`请输入${INPUT_LABLE_DIC[item.formLable]}`" 
                                 v-bind="item.config? item.config:{}"
                             />
                             <a-date-picker 
                                 v-if="item.component=='date'"
-                                v-model:value="formState[item.formLable]" 
+                                v-model:value="form[item.formLable]" 
                                 :placeholder="`请选择${INPUT_LABLE_DIC[item.formLable]}`"
                                 v-bind="item.config? item.config:{}"
                             />
                             <a-select
                                 v-if="item.component=='select'"
-                                v-model:value="formState[item.formLable]"
+                                v-model:value="form[item.formLable]"
                                 v-bind="item.config? item.config:{}"
                             >
                                 <a-select-option v-for="(option) in item.options" :value="option.value">
@@ -202,7 +228,7 @@
                             </a-select>
                             <div v-if="item.component=='upload'">
                                 <a-upload-dragger
-                                    v-model:file-list="formState[item.formLable]"
+                                    v-model:file-list="form[item.formLable]"
                                     v-bind="item.config? item.config:{}"
                                 >
                                     <div :className="style.uploadContent">
