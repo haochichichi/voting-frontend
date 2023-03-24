@@ -44,5 +44,6 @@ const local=zhCN
 <style lang="scss" scoped>
   .global{
     font-size: 16px;
+    font-family:"Microsoft YaHei";
   }
 </style>

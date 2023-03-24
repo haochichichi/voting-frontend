@@ -27,6 +27,7 @@ $pageContainters:(
         .#{$key}-container{
             @include common.flex-center;
             @include common.full-parent-size;
+            flex-direction: column;
             @each $attribute,$value in $values{
                 @debug "divider offset: #{$attribute}:#{$value}";
                 #{$attribute}:#{$value};

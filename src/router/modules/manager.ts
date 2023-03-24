@@ -11,4 +11,9 @@ export default[
         component:()=>import('/@/views/createVotingDetail/createVotingDetail.vue'),
         // redirect:'/login'
     },
+    {
+        path:'current/voting/menu',
+        name:'currentVotingMenu',
+        component:()=>import('/@/views/currentVotingMenu/currentVotingMenu.vue')
+    }
 ]

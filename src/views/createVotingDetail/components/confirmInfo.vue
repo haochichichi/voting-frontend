@@ -1,12 +1,20 @@
 <script setup lang="ts">
+    import { useRouter } from 'vue-router'
     import {reactive, ref, computed,defineAsyncComponent, onMounted,onUnmounted} from 'vue'
     import style from '../styles/votingInfo.module.scss'
     import {Card} from '@vue3-common-packages/components'
-    import {readWorkbookFromLocalFile,excelFileToBlob,workbookObjToArray,arrayToWorkbookObj} from '@vue3-common-packages/utils'
-    import {workbookArrayToTable,displayTableTag} from '../utils/constant'
+    import {
+        readWorkbookFromLocalFile,
+        excelFileToBlob,
+        workbookObjToArray,
+        arrayToWorkbookObj,
+        zipToFileList,
+    } from '@vue3-common-packages/utils'
+    
+    import {workbookArrayToTable,displayTableTag,fileListToPdfList} from '../utils/utils'
     import { storeToRefs } from 'pinia';
     
-    
+    const router = useRouter()
     const {stepNum,createVotingDetailStore} =defineProps(['stepNum','createVotingDetailStore'])
     const {form, getFormState,saveFormState} = storeToRefs(createVotingDetailStore) //实现响应式
     const emits = defineEmits(['setStepNum'])
@@ -14,23 +22,31 @@
         dataSource:[],
         columns:[]
     })
-    onMounted(() => {
+    onMounted(async () => {
         // 去除水印
         displayTableTag()
         // 回退跳转
         history.pushState(null, null, document.URL)
-        window.addEventListener("popstate", cancelConfirm, false); // 回退时执行goback方法
+        window.addEventListener("popstate", cancelConfirm, false); 
         // 初始化数据
-        console.log('跳转数据',createVotingDetailStore.form)
+        console.log('跳转数据',createVotingDetailStore.form.reviewYear.year())
+        // 解析excel
         if(createVotingDetailStore.form?.votingTemplateFiles?.length>0){
             const file=excelFileToBlob(createVotingDetailStore.form.votingTemplateFiles[0])
             readWorkbookFromLocalFile(file,(content)=>{
-                const array=workbookObjToArray(content)
-                console.log('数据内容',array)
-                // console.log(arrayToWorkbookObj('test',array.workbookArray))
-                // arrayToWorkbookObj('test1',array.workbookArray).saveExcel()
-                tableData.value=workbookArrayToTable(array.workbookArray[0])
+                const workbook=workbookObjToArray(content)
+                console.log('[excel文件解析]',workbook)
+                // console.log(arrayToWorkbookObj('test',workbook.workbookArray))
+                // arrayToWorkbookObj('test1',workbook.workbookArray).saveExcel()
+                tableData.value=workbookArrayToTable(workbook.workbookArray[0]) // 当前默认解析sheet1
             })
+        }
+        // 解析pdf
+        if(createVotingDetailStore.form?.applicationMaterialsFiles?.length>0){
+            const fileList=await zipToFileList(createVotingDetailStore.form.applicationMaterialsFiles[0])
+            console.log('[pdf解析]',createVotingDetailStore.form.applicationMaterialsFiles[0],fileList,fileList.length)
+            const pdfList=fileListToPdfList(fileList)
+            console.log('[pdf解析结果]',pdfList)
         }
         
     })
@@ -42,6 +58,11 @@
 
     const cancelConfirm=()=>{
         emits('setStepNum',stepNum-1)
+    }
+
+    const onConfirm = ()=>{
+        console.log('[创建会议]')
+        router.push({name:`currentVotingMenu`})
     }
     
 </script>
@@ -74,6 +95,7 @@
                 </a-button>
                 <a-button
                     type="primary" 
+                    @click="onConfirm"
                 >创建</a-button>
             </div>
         </div>

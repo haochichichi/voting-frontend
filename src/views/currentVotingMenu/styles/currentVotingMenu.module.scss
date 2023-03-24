@@ -1,0 +1,44 @@
+@use '/@/styles/common.scss';
+
+.titleContainer{
+    min-height:137px ;
+    margin-bottom: 32px;
+    
+    
+    .eachNumber{
+        margin: 20px 60px;
+        @include common.flex-center;
+        flex-direction: column;
+        .title{
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .number{
+            font-size: 40px;
+            color: #206ccF;
+        }
+    }
+}
+
+.content{
+    @include common.flex-center;
+    flex-wrap: wrap;
+}
+
+.tableContainer{
+    min-height: 775px;
+    // .table{
+    //     min-height: 1400px;
+    //     min-width: 600;
+    // }
+    .tag{
+        
+        
+    }
+}
+
+.tableContainer ,.titleContainer ,.content{
+    background-color: white;
+    width: 100%;
+}

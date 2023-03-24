@@ -6,6 +6,8 @@ export const DATE_STANDARD_FORMAT = 'YYYY-MM-DD HH:mm:ss'
 
 export const DATE_STANDARD_FORMAT_CN = 'YYYY年M月D日 HH:mm:ss'
 
+export const YEAR_FORMAT ='YYYY'
+
 export const HOUR_FORMAT = 'HH:mm:ss'
 
 export const ONE_DAY_MILLSECONDS = 86400000
