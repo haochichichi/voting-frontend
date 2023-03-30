@@ -23,6 +23,7 @@ git remote set-url origin https://<your_token>@github.com/<USERNAME>/<REPO>.git
 git remote set-url origin https://
 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@github.com/haochichichi/voting-frontend.git
 
+
 git remote rm origin
-git remote add origin https://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@github.com/haochichichi/voting-frontend.git
+git remote add origin https://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@github.com/haochichichi/voting-frontend.git
 
