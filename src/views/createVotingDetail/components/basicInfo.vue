@@ -2,6 +2,7 @@
     import style from '../styles/votingInfo.module.scss'
     import { Moment } from 'moment';
     import {Card} from '@vue3-common-packages/components'
+    import {useInputNumberFormater} from '@vue3-common-packages/headless'
     import {reactive, ref, computed,defineAsyncComponent, onMounted} from 'vue'
     import {Button,Form,Input} from 'ant-design-vue'
     import {INPUT_LABLE_DIC} from '../utils/constant'
@@ -18,10 +19,10 @@
         getSelectedMeetingTemplate,
         isFullInput,
     } from '../utils/utils'
-
+    
     // MOCK数据
     import {MOCK_MENU,MOCK_ENUMS} from '../../createVotingMenu/utils/mockData'
-import { Item } from 'ant-design-vue/lib/menu';
+    import{MEETING_ROOM_MENU} from '../utils/mockData'
    
 
     const YEAR_DEFAULT_FORMATE='YYYY'
@@ -31,7 +32,8 @@ import { Item } from 'ant-design-vue/lib/menu';
     const {form:storageForm, getFormState,saveFormState} = storeToRefs(createVotingDetailStore) //实现响应式
     const menuList=ref([])
     const enums=ref([])
- 
+    const meetingRoomOptions=ref(MEETING_ROOM_MENU)
+
     // 表格
     const form: UnwrapRef<form> = reactive({});
 
@@ -50,43 +52,85 @@ import { Item } from 'ant-design-vue/lib/menu';
             console.log('[重定向处理]')
         }
         form.baseInfo=initMenuInfo
-        // formConfig.forEach(item=>{
-        //     form[item.formLabel]=ref()
-        // })
 
+        // 动态处理输入限制配置
+        formConfig.value=formConfig.value.map((row)=>{
+            const newRow=row.map(item=>{
+                if(item.component==='input'&&item.numberFormater!=undefined){
+                    const {inputValue,onBlur}=useInputNumberFormater({numberType:item.numberFormater})
+                    form[item.formLabel]=inputValue
+                    item.config=item.config?{...item.config,onBlur}:{onBlur}
+                }
+               return item
+            })
+            return newRow
+        })
         // 时间默认为当前时间、标题提供初始化值
         form.reviewYear=dayjs(`${new Date()}`,YEAR_DEFAULT_FORMATE)
-        form.meetingRoomCode=111
+        form.meetingRoomCode=meetingRoomOptions.value[0]?.value
         form.title=getTitleContent(form.reviewYear.year(),initMenuInfo.attrLabels,initMenuInfo.menuLabels)
     })
 
-
-
     // 动态计算是否全部填写完成
     const submitDisabled = computed(()=>{
-        console.log('触发吗?',isFullInput(formConfig))
-        // const countString=`!(${isFullInput(formConfig)})`
-        // // return !(form.baseInfo&&form.reviewYear&&form.targetCount)
-        // // let result=false
-
-        // return eval(countString)
-        return !(form.reviewYear&&form.targetCount&&form.expertCount&&form.meetingRoomCode&&form.votingTemplateFiles&&form.applicationMaterialsFiles)
+        const countString=`!(${isFullInput(formConfig.value)})`
+        return eval(countString)
     })
 
+    // 判断当前可选日期
+    const getDisableDate =(current:any)=>{
+        return current && current < dayjs().subtract(1, 'days')
+    }
+
+    // 获取评审投票名称
     const getTitleContent=(year,attrs,menus)=>{
         const menuTitleList=[menus.shift(),menus.pop()]
         return `${year}年${attrs? attrs.join(''):''}${menuTitleList.filter(item=>item).join('')}`
     }
 
-    // 动态计算 评审投票系统
-    const titleContent=computed(()=>{
-        let result='未命名'
-        // return result
-        if (form.baseInfo&&form.reviewYear){
-            result=`${form.baseInfo?.attrLabels? form.baseInfo.attrLabels.join(''):''}${form.reviewYear.year()}年${form.baseInfo?.menuLabels? form.baseInfo.menuLabels.join(''):''}`
-        }
-        return result
-    })
+    
+
+    // 文件上传拦截&解析
+    const beforeUpload = async (type,uploadItem: UploadFile<unknown>): Promise<boolean> => {
+        // 坑：必须要返回一个 Promise，promise 中 必须返回false 才能阻止上传，通过校验必须返回true和 resolve 否则会阻止上传
+        const {event , file, fileList}=uploadItem
+        console.log('[文件阻止上传]',type, uploadItem,event , file, fileList)
+
+        event.target.onProgress({ percent: (0.1) * 100 })
+        event.target.onSuccess();
+        // return new Promise((resolve,reject) => {
+        //     const { supportFileType, maxSize, aspectUnit } = props;
+        //     const { size = 0, name = "" } = file || {};
+        //     return false;
+           
+
+        //     // if (!isFormatValidate(name, supportFileType)) {
+        //     //     message.error("请上传支持的文件格式!");
+        //     //     return false;
+        //     // }
+
+        //     // const isSizeValidate: boolean = size <= maxSize; // 文件大小判断
+        //     // if (!isSizeValidate) {
+        //     //     const msg = `文件最大不超过${getSizeByByte(maxSize, aspectUnit)}`;
+        //     //     message.error(msg);
+        //     //     console.log("msg", msg);
+        //     //     return false;
+        //     // }
+        //     // fileList.value = [...fileList.value, file];
+        //     // resolve(true);
+        //     // return true;
+        // });
+    }
+
+    // 动态计算 评审投票名称
+    // const titleContent=computed(()=>{
+    //     let result='未命名'
+    //     // return result
+    //     if (form.baseInfo&&form.reviewYear){
+    //         result=`${form.baseInfo?.attrLabels? form.baseInfo.attrLabels.join(''):''}${form.reviewYear.year()}年${form.baseInfo?.menuLabels? form.baseInfo.menuLabels.join(''):''}`
+    //     }
+    //     return result
+    // })
 
    
 
@@ -94,27 +138,7 @@ import { Item } from 'ant-design-vue/lib/menu';
 
     const mode1 = ref<string>('year');
 
-    const meetingRoomOptions=[
-    //     {
-    //     value: 'jack',
-    //     label: 'Jack',
-    //   },
-    //   {
-    //     value: 'lucy',
-    //     label: 'Lucy',
-    //   },
-    //   {
-    //     value: 'disabled',
-    //     label: 'Disabled',
-    //     disabled: true,
-    //   },
-    //   {
-    //     value: 'yiminghe',
-    //     label: 'Yiminghe',
-    //   },
-    ]
-
-    const formConfig=[
+    const formConfig=ref([
         [{
             component:'date',
             formLabel:'reviewYear',
@@ -125,8 +149,8 @@ import { Item } from 'ant-design-vue/lib/menu';
             config:{
                 format:'YYYY',
                 picker:'year',
+                disabledDate:getDisableDate,
             }
-            
         },
         // {
         //     component:'label',
@@ -155,20 +179,24 @@ import { Item } from 'ant-design-vue/lib/menu';
         [{
             component:'input',
             formLabel:'targetCount',
+            numberFormater:'positive-float',
             className:style.defaultInput,
             formItemConfig:{
                 rules:[{ required: true, message: '输入不得为空!' }]
             },
+            config:{
+            }
         },{
             component:'input',
             formLabel:'expertCount',
+            numberFormater:'positive',
             className:style.defaultInput,
             formItemConfig:{
                 rules:[{ required: true, message: '输入不得为空!' }]
             },
         },{
             component:'select',
-            options:meetingRoomOptions,
+            options:meetingRoomOptions.value,
             formLabel:'meetingRoomCode',
             className:style.defaultInput,
             formItemConfig:{
@@ -188,7 +216,8 @@ import { Item } from 'ant-design-vue/lib/menu';
             },
             config:{
                 maxCount:1,
-                accept:'.xls, .xlsx'
+                accept:'.xls, .xlsx',
+                onChange:beforeUpload.bind(this,'excel')
             } 
         }],
         [{
@@ -208,7 +237,7 @@ import { Item } from 'ant-design-vue/lib/menu';
 
             } 
         }],
-    ]
+    ])
     
     const isObjectFull=(object)=>{
 
@@ -247,13 +276,14 @@ import { Item } from 'ant-design-vue/lib/menu';
         <template v-slot:headerLeft>评审投票详细信息编辑</template>
         <div   :className="style.content">
             <a-form 
-                layout="vertical" 
+                layout="inline" 
                 :model="form"
                 @finish="onFinish"
             >
                 <div v-for="eachRow in formConfig" :className="style.eachRow">
-                    <template v-for="(item) in eachRow">
+                    
                         <a-form-item 
+                            v-for="(item) in eachRow"
                             :label="INPUT_LABLE_DIC[item.formLabel]" 
                             :className="item.className"
                             v-bind="item.formItemConfig? item.formItemConfig:{}"
@@ -304,7 +334,7 @@ import { Item } from 'ant-design-vue/lib/menu';
                             </div>
 
                         </a-form-item>
-                    </template>
+                   
                 </div>
                 <div :className="style.buttonRow">
                     <a-form-item >

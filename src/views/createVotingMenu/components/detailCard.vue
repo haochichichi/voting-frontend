@@ -25,7 +25,7 @@ onMounted(() => {
     if(menuList.length>0){
         enums.value=attrs.enums? attrs.enums:[]
         const menu=menuList[menuList.length-1]
-        tagList.value=getDetailCardGroupList(menu.childre?menu.childre:[])
+        tagList.value=getDetailCardGroupList(menu.children?menu.children:[])
         
         // 读取可选属性列表
         if (menu.categoryCode){
