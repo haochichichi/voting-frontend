@@ -1,4 +1,5 @@
 @use '/@/styles/common.scss';
+@import '/@/styles/theme.scss';
 .container{
     @include common.flex-aligin-center;
     flex-direction: column;
@@ -10,27 +11,37 @@
         @include common.flex-aligin-center;
         width: calc(100% - 20px);
         padding: 30px  0;
-        border-bottom: 1px solid black;
-        box-sizing: border-box
+        border-bottom: 1px solid $primary_color_gray;
+        box-sizing: border-box;
+        font-size:16px;
+        :global{
+            .ant-select{
+                margin-left:20px ;
+                min-width: 200px;
+            }
+        }
+        
     }
 
     .tagList{
         @include common.flex-aligin-center;
         flex-direction: column;
         width: 100%;
-        min-height: 400px;
+        // min-height: 370px;
         .eachRow{
             width: 100%;
             margin-top: 30px;
             @include common.flex-aligin-center;
             flex-wrap: wrap;
-        }
 
-        button{
-            margin: 10px 10px 0 10px;
-            flex-shrink: 0;
-            width: 160px;
-            height: 32px;
+            :global{
+                .ant-btn{
+                    margin: 10px 10px 0 10px;
+                    flex-shrink: 0;
+                    min-width: 160px;
+                }
+            }
+
         }
         
         .empty{
@@ -41,4 +52,10 @@
 
 .button{
     margin-top:10px ;
+}
+
+.empty{
+    margin-top: 40px;
+    min-height: 400px;
+    @include common.flex-center
 }

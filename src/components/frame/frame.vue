@@ -11,7 +11,6 @@
       
         <a-layout-header 
             v-if="!props.disableHeadBar"
-            :style="{backgroundColor: '#206CCF',height:'72px'}"
         >
             <div v-bind="{className:style.header}">
                 <div v-bind="{className:style.menus}">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import FullScreen from '/@/components/fullScreen/FullScreen.vue'
-
+import style from '/@/styles/global.module.scss'
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 const local=zhCN
 
@@ -20,30 +20,8 @@ const local=zhCN
   <FullScreen /> -->
   <a-config-provider :local="local">
     <!-- ant design 配置为中文环境 -->
-    <div class="global">
+    <div :className="style.global">
       <router-view />
     </div>
   </a-config-provider>
 </template>
-
-<!-- <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style> -->
-
-<style lang="scss" scoped>
-  .global{
-    font-size: 16px;
-    font-family:"Microsoft YaHei";
-  }
-</style>

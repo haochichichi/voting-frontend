@@ -1,6 +1,5 @@
 <script setup lang="ts">
-    import {ref} from 'vue'
-    import style from './styles/createVotingDetail.module.scss'
+    import {ref,onMounted} from 'vue'
     import PageContainer from '/@/components/frame/pageContainer.vue'
     import BasicInfo from './components/basicInfo.vue'
     import ConfirmInfo from './components/confirmInfo.vue'
@@ -20,7 +19,7 @@
 </script>
 
 <template>
-    <PageContainer :className="style.container">
+    <PageContainer>
         <component 
             :is="STEP_COMPONENT_DIC[stepNum]"
             @setStepNum="setStepNum"

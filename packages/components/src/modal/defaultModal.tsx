@@ -1,6 +1,5 @@
 import { ref ,toRef,onMounted,defineProps, defineComponent,onUpdated} from "vue"
 import {Modal as Amodal} from "ant-design-vue"
-import 'ant-design-vue/dist/antd.css'
 
 /*
     Desc:antModule封装函数式组件

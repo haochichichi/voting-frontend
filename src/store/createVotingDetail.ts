@@ -4,7 +4,7 @@ import {defineStore} from 'pinia'
 export const useCreateVotingDetailStore=defineStore("createVotingDetail",{
     state:()=>{
         return{
-            // categoryValue:'????', 
+            // categoryValue:'????', //院/火箭
             // createdBy:'???',
             // reviewTypePath:'',
             // reviewTypeCode:'',

@@ -1,0 +1,73 @@
+@import './theme.scss';
+
+.global{
+    font-size: 16px;
+    font-family:"Microsoft YaHei";
+}
+
+
+:global{
+    .ant-btn{
+//         min-height: 39px !important;
+//         font-size: 16px !important;
+//         &:hover{
+//             border-color: $primary_color_blue !important;
+//             color: $primary_color_blue !important;
+//         }
+        &:focus{
+            border-color: $primary_color_gray !important;
+            color:black !important;
+        }
+    }
+//     .ant-btn[disabled], .ant-btn[disabled]:hover, .ant-btn[disabled]:focus, .ant-btn[disabled]:active{
+//         color:rgba(0, 0, 0, 0.25) !important;
+//         border-color: $primary_color_gray !important;
+//     }
+//     .ant-btn-primary{
+//         background-color: $primary_color_blue !important;
+//         border-color: $primary_color_blue !important;
+//         &:hover{
+//             color: white !important;
+//             border-color: $primary_color_blue !important;
+//             background-color: $primary_light_color_blue !important;
+//         }
+        
+//     }
+//     .ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active{
+//         color:white !important;
+//         border-color: $primary_color_gray !important;
+//         background-color: rgba(0, 0, 0, 0.25) !important;
+//     }
+//     .ant-upload.ant-upload-drag{
+//         &:hover{
+//             color:$primary_color_blue !important;
+//             border-color: $primary_color_blue !important;
+//             svg,path{
+//                 color:$primary_color_blue !important;
+//             }
+//         }
+//     }
+//     .ant-input{
+//         &:hover{
+//             border-color:$primary_color_blue !important;
+//         }
+//     }
+    
+//     .ant-select-selector{
+//         min-height: 39px !important;
+//         display:flex !important;
+//         align-items: center !important;
+//     }
+//     .ant-select{
+//         font-size:16px !important;
+        
+//     }
+//     .ant-select-dropdown div{
+//         font-size:16px !important;
+//     }
+
+
+    .ant-empty{
+        color:$primary_color_gray !important;
+    }
+}

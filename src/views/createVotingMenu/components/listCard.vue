@@ -1,8 +1,17 @@
 <script setup lang="ts">
+import {ref,onMounted} from 'vue'
 import style from '../styles/listCard.module.scss'
 import DefaultModal from '/@/components/modal/defaultModal.vue'
 import DetailCard from './detailCard.vue'
-import {ref} from 'vue'
+import {getSelectedMenuList} from '../utils/utils'
+const {menuList}=defineProps(['menuList'])
+const menu=ref({})
+const selectMenu=ref({})
+onMounted(() => {
+    if(menuList.length>0){
+        menu.value=menuList[menuList.length-1]
+    }
+})
  const testDataButton=ref([
     {
         title:'111',
@@ -23,8 +32,9 @@ import {ref} from 'vue'
     },
     width:780
  }
- const buttonClick=()=>{
-    console.log('点击数据处理')
+ const buttonClick=(child)=>{
+    console.log('点击弹窗数据处理')
+    selectMenu.value=child
     modalRef.value.showDefaultModal.call(this,modalRef.value.visible)
  }
 
@@ -32,18 +42,21 @@ import {ref} from 'vue'
 </script>
 <template>
     <div :className="style.container">
-        <div>组件名称</div>
-        <div>装饰logo</div>
+        <div :className="style.title"><b>{{ menu.label? menu.label:'未命名' }}</b></div>
+        <div :className="style.logo"></div>
         <div :className="style.container"> 
-            <button 
+            <a-button
                 :className="style.button"
-                v-for="item in testDataButton"
-                @click="buttonClick"
-            >{{item.title}}</button>
+                v-for="child in  menu.children?menu.children:[]"
+                @click="buttonClick(child)"
+            >{{child.label}}</a-button>
         </div>
 
         <DefaultModal ref="modalRef" :config="modalConfig">
-            <DetailCard/>
+            <DetailCard 
+                :menuList="getSelectedMenuList(menuList,selectMenu)"
+                v-bind="$attrs"
+            />
         </DefaultModal>
     </div>
 </template>

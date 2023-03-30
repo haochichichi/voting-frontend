@@ -2,8 +2,23 @@
 .container{
     @include common.flex-aligin-center;
     flex-direction: column;
+    :global{
+        .ant-btn{
+            margin-top:10px ;
+            min-width: 280px;
+        }
+    }
+}
+.title{
+    font-size: 22px;
 }
 
-.button{
-    margin-top:10px ;
+.logo{
+    margin-top: 5px;
+    width: 100px;
+    height: 5px;
+    background-image:linear-gradient(to right, #478bf9 , rgb(27, 197, 197),rgb(21, 226, 157)); 
+    border-radius: 3px;
 }
+
+

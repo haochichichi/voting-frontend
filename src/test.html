@@ -1,0 +1,153 @@
+<html>
+
+</html>
+<script>
+    const MOCK_MENU=[
+                            {
+                                id:67,
+                                label:'正高级评审',
+                                level:4,
+                                sort:1,
+                                code:'2001001001001',  
+                            },
+                            {
+                                id:68,
+                                label:'正高级转系列',
+                                level:4,
+                                sort:2,
+                                code:'2001001001002',  
+                            },
+                            {
+                                id:69,
+                                label:'副高级评审',
+                                level:4,
+                                sort:3,
+                                code:'2001001001003',  
+                            },
+                            {
+                                id:70,
+                                label:'副高级转系列',
+                                level:4,
+                                sort:4,
+                                code:'2001001001004',  
+                            },
+                            {
+                                id:71,
+                                label:'中级认定',
+                                level:4,
+                                sort:6,
+                                code:'2001001001005',  
+                            },
+                            {
+                                id:74,
+                                label:'初级认定',
+                                level:4,
+                                sort:8,
+                                code:'2001001001003',  
+                            },
+                            {
+                                id:76,
+                                label:'员级认定',
+                                level:4,
+                                sort:10,
+                                code:'2001001001003',  
+                            },
+
+
+]
+const DETAIL_CARD_TAG_GROUP_DIC=[
+    {
+        sort:1,
+        key:'正高级',
+    },
+    {
+        sort:2,
+        key:'副高级',
+    },
+    {
+        sort:3,
+        key:'中级',
+    },
+    {
+        sort:4,
+        key:'初级',
+    },
+    {
+        sort:5,
+        key:'员级'
+    }
+]
+// 根据关键词对level4内容进行分组 
+const getDetailCardGroupList=(tagList)=>{
+    const tagListContent=[]
+    const tagListSet=new Set(tagList)
+    const sortGroup=DETAIL_CARD_TAG_GROUP_DIC.sort((a,b)=>a.sort-b.sort)
+    sortGroup.forEach((eachKey)=>{
+        const eachList=[...tagListSet].filter((eachTag)=>{
+            if(eachTag.label.includes(eachKey.key)){
+                tagListSet.delete(eachTag)
+                return true
+            }
+            return false
+        })
+        tagListContent.push(eachList)
+    })
+    const others=[...tagListSet]
+    if(others.length>0){
+        tagListContent.push(others)
+    }
+    return tagListContent
+}
+
+const MOCK_ENUMS=[
+    {
+        label:'单位',
+        code:'1001',
+        dictionaries:[
+            {label:'院本级',code:'1001001'},
+            {label:'中国火箭',code:'1001002'}
+        ]
+    },
+    {
+        label:'单位2',
+        code:'1001',
+        dictionaries:[
+            {label:'院本级',code:'1001001'},
+            {label:'中国火箭',code:'1001002'}
+        ]
+    },
+    {
+        label:'专业组',
+        code:'1002',
+        dictionaries:[
+            {label:'军品技术总体组',code:'1001001'},
+            {label:'军品技术系统组',code:'1001001'},
+        ]
+    }
+]
+
+// 递归获取所选属性
+const readSelectedAttribute=(enums,path)=>{
+    if(path.length===0){return []}
+    if(!enums||enums.length===0){
+        return [null]
+    }
+    const code=path.shift()
+    const node=enums.find(item=>item.code===code)
+    return [node,...readSelectedAttribute(node?.dictionaries? node.dictionaries:null,path)]
+}
+
+const isValidAttributeArray=(attrPath)=>{
+    for (let key=0;key<attrPath.length;key++){
+        const attr=attrPath[key]
+        if(!attr || (key==attrPath.length-1&&attr.dictionaries)){return false}
+    }
+    return true
+}
+
+let testList=[]
+const path=['1001',null]
+testList=readSelectedAttribute(MOCK_ENUMS,path,testList)
+console.log(testList,isValidAttributeArray(testList))
+
+</script>

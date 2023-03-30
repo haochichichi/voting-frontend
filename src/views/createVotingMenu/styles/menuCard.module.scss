@@ -1,5 +1,5 @@
 @use '/@/styles/common.scss';
-
+@import '/@/styles/theme.scss';
 
 
 .container{
@@ -7,24 +7,14 @@
     min-height:310px ;
     
     background-color: white;
-    // @include common.box-shadow;
     @include common.flex;
     flex-direction: column;
-    // box-shadow: 0px 10px 10px rgba(0, 0, 0 , .10);
-    // filter: drop-shadow(10px 10px 10px 10px rgba(0, 0, 0, .8));
-    .title{
-        @include common.full-parent-size;
-        // height: 50px;
-        @include common.flex-aligin-center;
-        // background-color: aqua;
-        border-bottom: 1px solid rgba(5, 5, 5, 0.06);
-        .logo{
-            margin: 0 20px
-        }
-        .titleContent{
 
+        .titleContent{
+            font-size: 20px;
+            line-height: 20px;
+            // margin:5px 0;
         }
-    }
 
     .content{
         // @include common.full-parent-size;
@@ -40,7 +30,7 @@
             min-width: 618px;
             min-height: 230px;
             @include common.flex-justify-center;
-            background-color: azure;
+            // background-color: azure;
         }
     }
    
@@ -48,4 +38,9 @@
 
 .container .content{
     flex:1;
+}
+.empty{
+    @include common.flex-center;
+    width: 100%;
+    flex: 1;
 }
