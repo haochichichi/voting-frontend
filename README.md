@@ -25,5 +25,5 @@ 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@github.com/haochichichi/voting-frontend
 
 
 git remote rm origin
-git remote add origin https://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@github.com/haochichichi/voting-frontend.git
+git remote add origin https://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@github.com/haochichichi/voting-frontend.git
 
