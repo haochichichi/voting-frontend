@@ -45,7 +45,7 @@
     // 表格
     const form: UnwrapRef<form> = reactive(storageForm.value);
 
-    onMounted(() => {
+    onMounted(async () => {
          // 接口数据处理
          console.log('[接口请求] 获取目录、获取enums')
         menuList.value=MOCK_MENU
@@ -54,9 +54,10 @@
         const params=router.currentRoute.value.query
         console.log('[路由参数]', params)
         // 表格数据初始化
-        const initMenuInfo= getSelectedMeetingTemplate(enums.value,menuList.value,params)
+        const initMenuInfo= await getSelectedMeetingTemplate(enums.value,menuList.value,params)
         if(!initMenuInfo||!initMenuInfo.isValid){
             console.log('[重定向处理]')
+            router.push({path:`/create/voting/menu`})
         }
         form.baseInfo=initMenuInfo
         // 获取会议室目录

@@ -8,6 +8,7 @@
 }
 .menus{
     @include common.flex-aligin-center;
+    flex: 1;
     // &:last-child{
     //     margin: 0 30px 0 0;
     // }

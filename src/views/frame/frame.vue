@@ -1,24 +1,30 @@
 <script setup lang="ts">
     import style from './styles/frame.module.scss'
     import Frame from '/@/components/frame/frame.vue'
-    import { ref,onMounted } from 'vue';
+    import { ref,onMounted,watch } from 'vue';
     import { UserOutlined ,PoweroffOutlined,SelectOutlined } from '@ant-design/icons-vue';
     import Menu from '/@/components/menu/defaultMenu.vue'
+    import {useRouter, useRoute } from 'vue-router'
     // 目录配置信息
     import {MENU_CONFIG_LIST} from './utils/constant'
     // 用户信息初始化
     const userInfo=ref({})
-    // 用户
-    const selectedKeys1=ref<string[]>(['2'])
+
+    // 目录配置
+    // const selectedKeys1=ref<string[]>(['2'])
+    const props =defineProps(['menuItem','id'])
+    const route = useRoute()
     const menuContent=ref([])
+    const selectedKeys=ref<string[]>([''])
 
     onMounted(()=>{
         // 用户身份验证
-        console.log('[身份验证]')
+        console.log('[身份验证]',props,route.params.menuItem)
         userInfo.value.ukeyID='liangli@calt.casc'
 
         // 用户目录获取
         menuContent.value=MENU_CONFIG_LIST
+        selectedKeys.value=props.menuItem
     })
 
     // 登出
@@ -34,8 +40,9 @@
     const menuConfig={
         theme:'dark',
         mode:'horizontal',
-        style:{ lineHeight: '64px' },
+        style:{ lineHeight: '64px' ,flex:1},
     }
+    
 
 </script>
 
@@ -47,54 +54,13 @@
             </div>
         </template>
         <template v-slot:headerContent>
-            我是表中
-            <!-- <a-menu
-                mode="horizontal"
-                v-model:selectedKeys="selectedKeys1"
-                :style="{ lineHeight: '64px' }"
-                v-bind="menuConfig"
-            >
-                <a-menu-item 
-                    v-for="item in menuContent"
-                    key="item.key"
-                >
-                    <template #icon>  <component :is="item.icon? item.icon:MenuOutlined "/></template>
-                    {{item.label}}
-                </a-menu-item>
-                <a-menu-item key="2">nav 2</a-menu-item>
-                <a-menu-item key="3">nav 3</a-menu-item>
-                <a-sub-menu>
-                <template #icon>
-                    <setting-outlined />
-                </template>
-                <template #title>Navigation Three - Submenu</template>
-                <a-menu-item-group title="Item 1">
-                    <a-menu-item key="setting:1">Option 1</a-menu-item>
-                    <a-menu-item key="setting:2">Option 2</a-menu-item>
-                </a-menu-item-group>
-                <a-menu-item-group title="Item 2">
-                    <a-menu-item key="setting:3">Option 3</a-menu-item>
-                    <a-sub-menu>
-                            <template #icon>
-                                <setting-outlined />
-                            </template>
-                            <template #title>Navigation Three - Submenu</template>
-                            <a-menu-item-group title="Item 1">
-                                <a-menu-item key="setting:1">Option 1</a-menu-item>
-                                <a-menu-item key="setting:2">Option 2</a-menu-item>
-                            </a-menu-item-group>
-                            <a-menu-item-group title="Item 2">
-                                <a-menu-item key="setting:3">Option 3</a-menu-item>
-                                <a-menu-item key="setting:4">Option 4</a-menu-item>
-                            </a-menu-item-group>
-                        </a-sub-menu>
-                </a-menu-item-group>
-                </a-sub-menu>
-            </a-menu> -->
+            
+            选择目录{{selectedKeys}}
             <Menu
+                v-model="selectedKeys"
                 v-bind="{
                     menuConfig,
-                    menuList:menuContent
+                    menuList:menuContent,
                 }"
             />
            
