@@ -28,32 +28,30 @@
         // 回退跳转
         history.pushState(null, null, document.URL)
         window.addEventListener("popstate", cancelConfirm, false); 
-        // 初始化数据
-        console.log('跳转数据',createVotingDetailStore.form.reviewYear.year())
         // 解析excel
-        if(createVotingDetailStore.form?.votingTemplateFiles?.length>0){
-            const file=excelFileToBlob(createVotingDetailStore.form.votingTemplateFiles[0])
-            readWorkbookFromLocalFile(file,(content)=>{
-                const workbook=workbookObjToArray(content)
-                console.log('[excel文件解析]',workbook)
-                // console.log(arrayToWorkbookObj('test',workbook.workbookArray))
-                // arrayToWorkbookObj('test1',workbook.workbookArray).saveExcel()
-                tableData.value=workbookArrayToTable(workbook.workbookArray[0]) // 当前默认解析sheet1
-            })
-        }
+        tableData.value=createVotingDetailStore.form?.excelObj||[]
+        // if(createVotingDetailStore.form?.votingTemplateFiles?.length>0){
+        //     const file=excelFileToBlob(createVotingDetailStore.form.votingTemplateFiles[0])
+        //     readWorkbookFromLocalFile(file,(content)=>{
+        //         const workbook=workbookObjToArray(content)
+        //         console.log('[excel文件解析]',workbook)
+        //         // console.log(arrayToWorkbookObj('test',workbook.workbookArray))
+        //         // arrayToWorkbookObj('test1',workbook.workbookArray).saveExcel()
+        //         tableData.value=workbookArrayToTable(workbook.workbookArray[0]) // 当前默认解析sheet1
+        //     })
+        // }
         // 解析pdf
-        if(createVotingDetailStore.form?.applicationMaterialsFiles?.length>0){
-            const fileList=await zipToFileList(createVotingDetailStore.form.applicationMaterialsFiles[0])
-            console.log('[pdf解析]',createVotingDetailStore.form.applicationMaterialsFiles[0],fileList,fileList.length)
-            const pdfList=fileListToPdfList(fileList)
-            console.log('[pdf解析结果]',pdfList)
-        }
+        // if(createVotingDetailStore.form?.applicationMaterialsFiles?.length>0){
+        //     const fileList=await zipToFileList(createVotingDetailStore.form.applicationMaterialsFiles[0])
+        //     console.log('[pdf解析]',createVotingDetailStore.form.applicationMaterialsFiles[0],fileList,fileList.length)
+        //     const pdfList=fileListToPdfList(fileList)
+        //     console.log('[pdf解析结果]',pdfList)
+        // }
         
     })
     onUnmounted(()=>{
         // 销毁回退
         window.removeEventListener("popstate", cancelConfirm, false);
-
     })
 
     const cancelConfirm=()=>{
@@ -81,7 +79,6 @@
                 />
                 <!-- <s-table
                     :columns="tableData.columns"
-                    
                     :pagination="false"
                     :data-source="tableData.dataSource"
                 ></s-table> -->

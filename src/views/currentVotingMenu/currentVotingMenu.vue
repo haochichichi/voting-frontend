@@ -3,6 +3,7 @@ import PageContainer from '/@/components/frame/pageContainer.vue'
 import {Card} from '@vue3-common-packages/components'
 import style from './styles/currentVotingMenu.module.scss'
 import {HEAD_NUM_TITLE,TAG_DIC,COLOR_DIC} from './utils/constant'
+import { recordExpression } from '@babel/types';
 
 const columns = [
   {
@@ -67,6 +68,17 @@ const data = [
     tags: ['3', '4'],
   },
 ];
+const customRow=(record,index)=>{
+  return {
+    onclick:(event)=>{console.log('[鼠标点击]',event,record,index)}
+  }
+}
+
+// 表格属性设置
+const tableConfig={
+  columns,
+  customRow
+}
 
 
 </script>
@@ -90,22 +102,23 @@ const data = [
         <Card :className="style.tableContainer">
             <template v-slot:headerLeft>评审投票列表</template>
             <div :className="style.content">
-                <a-table 
-                :columns="columns" 
+              <a-table 
                 :data-source="data" 
                 :className="style.table"
-            >
-                    <template #name="{ text }">
+                v-bind="tableConfig"
+              >
+                <template #name="{ text }">
                     <a>{{ text }}111</a>
-                    </template>
-                    <template #customTitle>
+                </template>
+                    
+                <template #customTitle>
                     <span>
                         <smile-outlined />
                         序号
                     </span>
-                    </template>
+                </template>
 
-                    <template #tags="{ text: tags }">
+                <template #tags="{ text: tags }">
                     <span>
                         <a-tag
                         v-for="tag in tags"
@@ -114,12 +127,12 @@ const data = [
                             color:COLOR_DIC[TAG_DIC[tag].color]
                         }"
                         >
-                        {{ tag.toUpperCase() }}
-                        {{TAG_DIC[tag]}}
+                        <!-- {{ tag.toUpperCase() }} -->
+                        {{TAG_DIC[tag]?.text||'未知'}}
                         </a-tag>
                     </span>
-                    </template>
-                    <template #action="{ record }">
+                </template>
+                <template #action="{ record }">
                     <span>
                         <a>Invite 一 {{ record.name }}</a>
                         <a-divider type="vertical" />
@@ -130,9 +143,9 @@ const data = [
                         <down-outlined />
                         </a>
                     </span>
-                    </template>
-                </a-table>
-            </div>
+                </template>
+            </a-table>
+          </div>
         </Card>
     </PageContainer>
 </template>

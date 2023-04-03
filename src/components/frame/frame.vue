@@ -1,6 +1,6 @@
 <!-- 页面框架 -->
 <script setup lang="ts">
-    import style from './style/frame.module.scss'
+    import style from './styles/frame.module.scss'
     const props =defineProps(['disableHeadBar'])
 </script>
 <template>
@@ -14,7 +14,8 @@
         >
             <div v-bind="{className:style.header}">
                 <div v-bind="{className:style.menus}">
-                    <div>logo 图标</div>
+                    
+                    <slot name="logoContent"><div>logo 图标</div></slot>
                     <slot name="headerContent"></slot>
                     <!-- <div>
                         <a-menu>

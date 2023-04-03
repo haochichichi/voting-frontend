@@ -2,7 +2,8 @@ import { computed, defineComponent, ref, watch,onMounted } from 'vue';
 export interface UseInputNumberOptions {
   // getElement?: () => EnhancedHTMLElement
   // onFullscreenChange?: (state: boolean) => void
-  numberType?:String // positive\negative\float  默认为正负整数
+  numberType?:string // positive\negative\float  默认为正负整数
+  initValue?:string
 }
 
 const isPositiveNum=(numberType)=>numberType.split('-').find(item=>item==='positive')!=undefined
@@ -18,8 +19,8 @@ const getRegString=(numberType)=>{
 }
 
 // 可输入小数/负数
-export const useInputNumberFormater = ({numberType=""}: UseInputNumberOptions = {}) => {
-  const inputValue = ref<string>('');
+export const useInputNumberFormater = ({initValue='',numberType=''}: UseInputNumberOptions = {}) => {
+  const inputValue = ref<string>(initValue);
   watch(inputValue, (val, preVal) => {
     format(val, preVal);
   });

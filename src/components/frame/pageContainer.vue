@@ -1,6 +1,6 @@
 <!-- 带headbar时使用的页面容器 -->
 <script setup lang="ts">
-    import style from './style/pageContainer.module.scss'
+    import style from './styles/pageContainer.module.scss'
     import {ref,defineProps} from 'vue'
     const props =defineProps(['conatinerType','className'])
 

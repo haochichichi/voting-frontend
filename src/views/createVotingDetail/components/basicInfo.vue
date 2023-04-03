@@ -3,7 +3,7 @@
     import { Moment } from 'moment';
     import {Card} from '@vue3-common-packages/components'
     import {useInputNumberFormater} from '@vue3-common-packages/headless'
-    import {reactive, ref, computed,defineAsyncComponent, onMounted} from 'vue'
+    import {reactive, ref, computed,defineAsyncComponent, onMounted,onUnmounted} from 'vue'
     import {Button,Form,Input} from 'ant-design-vue'
     import {INPUT_LABLE_DIC} from '../utils/constant'
     import dayjs, { Dayjs } from 'dayjs';
@@ -18,11 +18,19 @@
         fileListToPdfList,
         getSelectedMeetingTemplate,
         isFullInput,
+        getMeetingRoomInfo,
     } from '../utils/utils'
-    
+    // 文件解析工具函数
+    import {
+        readWorkbookFromLocalFile,
+        excelFileToBlob,
+        workbookObjToArray,
+        arrayToWorkbookObj,
+        zipToFileList,
+    } from '@vue3-common-packages/utils'
     // MOCK数据
     import {MOCK_MENU,MOCK_ENUMS} from '../../createVotingMenu/utils/mockData'
-    import{MEETING_ROOM_MENU} from '../utils/mockData'
+    import{MEETING_ROOM_MENU,MEETING_ROOM_RAW_DATA} from '../utils/mockData'
    
 
     const YEAR_DEFAULT_FORMATE='YYYY'
@@ -32,17 +40,16 @@
     const {form:storageForm, getFormState,saveFormState} = storeToRefs(createVotingDetailStore) //实现响应式
     const menuList=ref([])
     const enums=ref([])
-    const meetingRoomOptions=ref(MEETING_ROOM_MENU)
+    const meetingRoomOptions=ref([])
 
     // 表格
-    const form: UnwrapRef<form> = reactive({});
+    const form: UnwrapRef<form> = reactive(storageForm.value);
 
     onMounted(() => {
          // 接口数据处理
          console.log('[接口请求] 获取目录、获取enums')
         menuList.value=MOCK_MENU
         enums.value=MOCK_ENUMS
-
         // 路由数据处理
         const params=router.currentRoute.value.query
         console.log('[路由参数]', params)
@@ -52,12 +59,14 @@
             console.log('[重定向处理]')
         }
         form.baseInfo=initMenuInfo
-
+        // 获取会议室目录
+        const {meetingRoomDic,meetingSelectedList}=getMeetingRoomInfo(MEETING_ROOM_RAW_DATA)
+        meetingRoomOptions.value=meetingSelectedList
         // 动态处理输入限制配置
         formConfig.value=formConfig.value.map((row)=>{
             const newRow=row.map(item=>{
                 if(item.component==='input'&&item.numberFormater!=undefined){
-                    const {inputValue,onBlur}=useInputNumberFormater({numberType:item.numberFormater})
+                    const {inputValue,onBlur}=useInputNumberFormater({initValue:form[item.formLabel],numberType:item.numberFormater})
                     form[item.formLabel]=inputValue
                     item.config=item.config?{...item.config,onBlur}:{onBlur}
                 }
@@ -67,13 +76,15 @@
         })
         // 时间默认为当前时间、标题提供初始化值
         form.reviewYear=dayjs(`${new Date()}`,YEAR_DEFAULT_FORMATE)
-        form.meetingRoomCode=meetingRoomOptions.value[0]?.value
+        form.meetingRoomCode=meetingRoomOptions.value[0]
         form.title=getTitleContent(form.reviewYear.year(),initMenuInfo.attrLabels,initMenuInfo.menuLabels)
     })
 
     // 动态计算是否全部填写完成
     const submitDisabled = computed(()=>{
-        const countString=`!(${isFullInput(formConfig.value)})`
+        // 除表单内容外,也需考虑解析后内容
+        // return false
+        const countString=`!(${isFullInput(formConfig.value)}&&form.excelObj&&form.pdfFileList)`
         return eval(countString)
     })
 
@@ -88,38 +99,42 @@
         return `${year}年${attrs? attrs.join(''):''}${menuTitleList.filter(item=>item).join('')}`
     }
 
-    
-
-    // 文件上传拦截&解析
-    const beforeUpload = async (type,uploadItem: UploadFile<unknown>): Promise<boolean> => {
+    // excel文件上传拦截&解析
+    const beforeExcelUpload = async (uploadItem: UploadFile<unknown>): Promise<boolean> => {
         // 坑：必须要返回一个 Promise，promise 中 必须返回false 才能阻止上传，通过校验必须返回true和 resolve 否则会阻止上传
-        const {event , file, fileList}=uploadItem
-        console.log('[文件阻止上传]',type, uploadItem,event , file, fileList)
+        console.log('[文件阻止上传]',uploadItem)
+        // 解析excel文件，存入解析对象
+        const file=excelFileToBlob(uploadItem)
+            readWorkbookFromLocalFile(file,(content)=>{
+                const workbook=workbookObjToArray(content)
+                // console.log(arrayToWorkbookObj('test',workbook.workbookArray))
+                // arrayToWorkbookObj('test1',workbook.workbookArray).saveExcel()
+                form.excelObj=workbookArrayToTable(workbook.workbookArray[0]) // 当前默认解析sheet1
+                console.log('[解析excel文件]',form.excelObj)
+        })
+        return false
+    }
+    // excel文件删除
+    const removeExcel=(removeItem: UploadFile<unknown>)=>{
+        console.log('删除文件',removeItem)
+        form.votingTemplateFiles=null
+        form.excelObj=null        
+    }
 
-        event.target.onProgress({ percent: (0.1) * 100 })
-        event.target.onSuccess();
-        // return new Promise((resolve,reject) => {
-        //     const { supportFileType, maxSize, aspectUnit } = props;
-        //     const { size = 0, name = "" } = file || {};
-        //     return false;
-           
-
-        //     // if (!isFormatValidate(name, supportFileType)) {
-        //     //     message.error("请上传支持的文件格式!");
-        //     //     return false;
-        //     // }
-
-        //     // const isSizeValidate: boolean = size <= maxSize; // 文件大小判断
-        //     // if (!isSizeValidate) {
-        //     //     const msg = `文件最大不超过${getSizeByByte(maxSize, aspectUnit)}`;
-        //     //     message.error(msg);
-        //     //     console.log("msg", msg);
-        //     //     return false;
-        //     // }
-        //     // fileList.value = [...fileList.value, file];
-        //     // resolve(true);
-        //     // return true;
-        // });
+    // zip文件上传拦截
+    const beforeZipUpload= async (uploadItem: UploadFile<unknown>): Promise<boolean> => {
+        // 解析压缩包存入pdf文件列表
+        const fileList=await zipToFileList(uploadItem)
+        console.log('[pdf解析]',uploadItem,fileList,fileList.length)
+        const pdfList=fileListToPdfList(fileList)
+        console.log('[pdf解析结果]',pdfList)
+        form.pdfFileList=pdfList
+        return false
+    }
+    // zip文件删除
+    const removeZip=(removeItem: UploadFile<unknown>)=>{
+        form.applicationMaterialsFiles=null
+        form.pdfFileList=null     
     }
 
     // 动态计算 评审投票名称
@@ -217,7 +232,8 @@
             config:{
                 maxCount:1,
                 accept:'.xls, .xlsx',
-                onChange:beforeUpload.bind(this,'excel')
+                beforeUpload:beforeExcelUpload,
+                onRemove:removeExcel
             } 
         }],
         [{
@@ -233,36 +249,19 @@
             },
             config:{
                 maxCount:1,
-                accept:'.zip'
-
+                accept:'.zip',
+                beforeUpload:beforeZipUpload,
+                onRemove:removeZip
             } 
         }],
     ])
-    
-    const isObjectFull=(object)=>{
-
-    }
-    
-    
-
-    const  value1 =ref<Moment>()
-    const onChange = (test) => {
-      console.log(test);
-    };
-    const onOpen=(status)=>{
-        console.log(status)
-    }
-    const onFinish=(values: any)=>{
-        console.log('Success:', values);
-    }
 
     const submitCreation =(values: any)=>{
-        form.title=titleContent.value
+        // form.title=titleContent.value // 下掉动态计算 评审投票名称
         createVotingDetailStore.saveFormState(form,{})
         console.log('[store数据]',createVotingDetailStore.form,createVotingDetailStore.getVotingDetailInfo)
         emits('setStepNum',stepNum+1)
     }
-
 
     const cancelCreation=()=>{
         router.push({path:`/create/voting/menu`})
@@ -278,7 +277,6 @@
             <a-form 
                 layout="inline" 
                 :model="form"
-                @finish="onFinish"
             >
                 <div v-for="eachRow in formConfig" :className="style.eachRow">
                     

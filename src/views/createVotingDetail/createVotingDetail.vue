@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {ref,onMounted} from 'vue'
+    import {ref,onMounted,onUnmounted} from 'vue'
     import PageContainer from '/@/components/frame/pageContainer.vue'
     import BasicInfo from './components/basicInfo.vue'
     import ConfirmInfo from './components/confirmInfo.vue'
@@ -14,6 +14,12 @@
     const setStepNum=(num)=>{
         stepNum.value=num
     }
+    // 清除填入数据
+    onUnmounted(()=>{
+        // 销毁回退
+        console.log('[销毁数据]')
+        createVotingDetailStore.$reset()
+    })
 
     console.log(STEP_COMPONENT_DIC[0],stepNum.value)
 </script>

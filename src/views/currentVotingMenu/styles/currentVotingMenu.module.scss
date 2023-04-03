@@ -42,3 +42,10 @@
     background-color: white;
     width: 100%;
 }
+
+// 表格样式设计
+:global{
+    .ant-table table tbody tr{
+        cursor: pointer;
+    }
+}

@@ -138,7 +138,19 @@ export const getAttrLabels=(menuPath)=>{
     return result
 }
 
-
+// 获取会议可选列表
+export const getMeetingRoomInfo=(rawData)=>{
+    const meetingRoomDic={}
+    const meetingSelectedList=[]
+    rawData.forEach(item=>{
+        meetingRoomDic[item.code]=item
+        meetingSelectedList.push({
+            value:item.code||'',
+            label:item.label||'',
+        })
+    })
+    return {meetingRoomDic,meetingSelectedList}
+}
 
 // 所选会议模板数据处理
 export const getSelectedMeetingTemplate=(enums,menu,params)=>{

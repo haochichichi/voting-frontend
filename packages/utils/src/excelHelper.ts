@@ -42,7 +42,7 @@ export const arrayToWorkbookObj = (fileName:string,datas)=>{
     // excel.saveExcel();
     
     return new ExportJsonExcel(excelResult);
-    // ArrayToExcel(fileName,datas).saveExcel();
+    // arrayToWorkbookObj(fileName,datas).saveExcel();
 }
 
 export const excelToObject = ()=>{
@@ -77,60 +77,28 @@ export const workbookObjToArray=(workbook)=>{
 }
 
 
-// 读取本地excel文件
+// 使用xlsx解析包,读取本地excel文件
 export const readWorkbookFromLocalFile=(file, callback)=> {
-    console.log('[传入文件]',file)
     if (!file||file.type!='application/vnd.ms-excel;charset=utf-8'){
-        console.log('[非excel文件!]',file)
+        console.log('[readWorkbookFromLocalFile][非excel文件!]',file)
         return 
     }
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
-        const data = e.target.result;
-        // 切换为新的调用方式
-        const workbook = read(data, {
-            type: 'binary'
-        });
-        // 取第一张表
-        console.log('[excel数据]',workbook)
-        if(callback) callback(workbook);
-        // const wsname = workbook.SheetNames[0];
-        // // 切换为新的调用方式 生成json表格内容
-        // const ws = utils.sheet_to_json(workbook.Sheets[wsname]);
-        // console.log(ws);
-
+        try {
+            const data = e.target.result;
+            // 切换为新的调用方式
+            const workbook = read(data, {
+                type: 'binary'
+            });
+            // 取第一张表
+            if(callback) callback(workbook);
+        }catch(e){
+            console.log('[readWorkbookFromLocalFile][解析excel报错!]',file,e)
+            return false
+        }
     };
     fileReader.readAsBinaryString(file);
-
-    // var that = this;
-    // const files = e.target.files;
-    // // 如果没有文件名
-    // if(files.length<=0){
-    //         return false;
-    // }else if(!/\.(xls|xlsx)$/.test(files[0].name.toLowerCase())){
-    //      this.$Message.error('上传格式不正确，请上传xls或者xlsx格式');
-    //      return false;
-    // }
-
-    // const fileReader = new FileReader();
-    // fileReader.onload = (ev) => {
-    //     try {
-    //         const data = ev.target.result;
-    //         // 切换为新的调用方式
-    //         const workbook = read(data, {
-    //             type: 'binary'
-    //         });
-    //         // 取第一张表
-    //         const wsname = workbook.SheetNames[0];
-    //         // 切换为新的调用方式 生成json表格内容
-    //         const ws = utils.sheet_to_json(workbook.Sheets[wsname]);
-    //         console.log(ws);
-    //         // 后续为自己对ws数据的处理
-    //     } catch (e) {
-    //         return false;
-    //     }
-    // };
-    // fileReader.readAsBinaryString(files[0]);
 }
 
 export const excelToArray = ()=>{
