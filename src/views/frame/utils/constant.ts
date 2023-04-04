@@ -3,25 +3,60 @@ export const MENU_CONFIG_LIST=[
     {
         sort:1,
         label:'创建评审投票',
-        key:'1',
+        key:'createVoting',
         icon:UserOutlined,
+        routerLink:{path:'/create/voting/menu'},
         roleIDs:[],
         children:[],
     },
     {
         sort:2,
         label:'评审投票管理',
-        key:'2',
+        key:'manageVoting',
         icon:PoweroffOutlined,
+        routerLink:{path:'/current/voting/menu'},
         roleIDs:[],
         children:[],
     },
     {
         sort:3,
         label:'评审投票管理',
-        key:'3',
+        key:'menu',
         icon:PoweroffOutlined,
         roleIDs:[],
-        children:[],
+        type:'subMenu',
+        children:[
+            {
+                type:'groupMenu',
+                label:'组1',
+                children:[
+                    {
+                        label:'项1',
+                        key:'项1',
+                        icon:PoweroffOutlined,
+                    },{
+                        type:'subMenu',
+                        label:'项2',
+                        key:'项2',
+                        icon:PoweroffOutlined,
+                        children:[
+                            {
+                                label:'项4',
+                                key:'项4',
+                            },
+                            {
+                                label:'项5',
+                                key:'项5',
+                            },
+                        ]
+                    }
+                ]
+            },
+            {
+                label:'项3',
+                key:'项3',
+                icon:PoweroffOutlined,
+            }
+        ],
     }
 ]
