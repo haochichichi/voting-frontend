@@ -34,28 +34,35 @@ export const MENU_CONFIG_LIST=[
                         label:'项1',
                         key:'项1',
                         icon:PoweroffOutlined,
-                    },{
-                        type:'subMenu',
-                        label:'项2',
-                        key:'项2',
-                        icon:PoweroffOutlined,
-                        children:[
-                            {
-                                label:'项4',
-                                key:'项4',
-                            },
-                            {
-                                label:'项5',
-                                key:'项5',
-                            },
-                        ]
-                    }
+                    },
+                   
                 ]
             },
             {
                 label:'项3',
                 key:'项3',
                 icon:PoweroffOutlined,
+            },
+            {
+                label:'项6',
+                key:'项6',
+                icon:PoweroffOutlined,
+            },
+            {
+                type:'subMenu',
+                label:'项2',
+                key:'项2',
+                icon:PoweroffOutlined,
+                children:[
+                    {
+                        label:'项4',
+                        key:'项4',
+                    },
+                    {
+                        label:'项5',
+                        key:'项5',
+                    },
+                ]
             }
         ],
     }

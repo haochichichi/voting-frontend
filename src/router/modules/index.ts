@@ -20,6 +20,11 @@ export default [
         },
         children:children,
     },
+    {
+        path:'/test',
+        name:'test',
+        component:()=>import('/@/components/fullScreen/FullScreen.vue')
+    },
     ...login,
     ...defaultPages,
 ]
